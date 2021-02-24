@@ -1,0 +1,45 @@
+*{
+  box-sizing: border-box;
+}
+
+body {
+  background-color: rgb(77, 165, 241);
+  font-family: Arial, Helvetica, sans-serif;
+}
+header {
+  line-height: .5; 
+}
+
+#BusMall {
+  text-align: center;
+  font-size: 45px;
+}
+
+#select {
+  text-align: center;
+  font-size: 30px;
+}
+
+#images {
+  display: flex;
+  gap: 2rem;
+  padding-left: 15rem;
+  padding-right: 15rem;
+}
+
+img {
+  flex: 1;
+  width: 250px;
+  height: 250px;
+  min-width: 0;
+  margin-left: 50px;
+  margin-top: 50px;
+  border: solid 5px rgb(241, 27, 213);
+  border-radius: 10px;
+  box-shadow: 10px 10px 10px darkslateblue;
+}
+
+
+p {
+  text-align: center;
+}
