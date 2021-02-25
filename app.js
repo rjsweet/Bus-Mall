@@ -20,22 +20,44 @@ let centerImageObject = null;
 let rightImageObject = null;
 
 /* Constructor Notice the capital start of the variable "Picture" */
-function Picture (caption, url) {
+function Picture (caption, url) { // parameters
     this.caption = caption;
     this.url = url;
     this.clickCtr = 0;
     this.displayCtr = 0;
 
     Picture.all.push(this);
+    // declares empty array to be pushed to later
+    // "Picture" is the constructor function and "all" is the array
 };
 
 Picture.all = [];
 
 /* For loop that iterates through both the names of the products and their related image files. */
-function createProducts() {
+function createProductsFromStart() {
     for (let i = 0; i < productNames.length; i++) {
         const productName = productNames[i];
         new Picture(productName, './imgs/' + productName + '.jpg');
+    }
+}
+
+function createProdFromLocStor(storageGet) {
+    const javaScriptPics = JSON.parse(storageGet);
+
+    for (let i = 0; i < javaScriptPics.length; i++) {
+        const rawData = javaScriptPics[i];
+        const newPictureInstance = new Picture(rawData.caption, rawData.url);
+        newPictureInstance.clickCtr = rawData.clickCtr;
+        newPictureInstance.displayCtr = rawData.displayCtr;
+    }
+}
+
+function createPictureInstances() { // creating from start if no local storage, from local otherwise
+    const storageGet = localStorage.getItem('pictures');
+    if (storageGet === null) {
+        createProductsFromStart();
+    } else {
+        createProdFromLocStor(storageGet);
     }
 }
 
@@ -49,11 +71,13 @@ function pickNewImages() {
 
         const product = Picture.all[i];
 
-        if (product !== leftImageObject && product !== centerImageObject && product !== rightImageObject) {
-            
+        if (product !== leftImageObject && product
+                    !== centerImageObject && product
+                    !== rightImageObject) {
+            // conditional comparison 
             safeProducts.push(product);
 
-            if (safeProducts.length === 3) {
+            if (safeProducts.length === 3) { // conditional statement of length of array
                 break;
             }
         }
@@ -128,6 +152,11 @@ function imageClickHandler(event) {
     if (totalClicks === maxClicks) {
         allImagesElem.removeEventListener('click', imageClickHandler);
         alert('Please press the "View Results"')
+        // step one of JSON to local storage
+        const JSONPicture = JSON.stringify(Picture.all);
+        // step two of JSON to local storage
+        localStorage.setItem('pictures', JSONPicture);
+
         const resultsButton = document.getElementById('show-results');
         resultsButton.addEventListener('click', renderResults);
     }
@@ -180,7 +209,7 @@ function renderChart() {
 
 allImagesElem.addEventListener('click', imageClickHandler);
 
-createProducts();
+createProductsFromStart();
 
 pickNewImages();
 
